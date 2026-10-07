@@ -1,0 +1,29 @@
+@staticmethod
+def update_available_balance(portfolio_id, amount):
+    query = """
+        UPDATE portfolio_details
+        SET available_balance = available_balance + %s
+        WHERE portfolio_id = %s
+        RETURNING available_balance;
+    """
+
+    result = Database.execute_query(
+        query,
+        (amount, portfolio_id),
+        fetch_one=True
+    )
+
+    if not result:
+        raise ValueError("Portfolio not found")
+
+    return result["available_balance"]
+
+
+
+
+
+
+
+
+
+
