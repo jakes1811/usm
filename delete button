@@ -1,0 +1,44 @@
+{
+  field: "actions",
+  headerName: "Action",
+  width: 120,
+  sortable: false,
+  filterable: false,
+
+  renderCell: (params) => (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 0.5,
+      }}
+    >
+      <Tooltip title="View Portfolio">
+        <IconButton
+          size="small"
+          onClick={() =>
+            navigate(
+              `/portfolios/${params.row.portfolio_id}`
+            )
+          }
+        >
+          <VisibilityIcon />
+        </IconButton>
+      </Tooltip>
+
+      <Tooltip title="Delete Portfolio">
+        <IconButton
+          size="small"
+          onClick={() =>
+            handleDeletePortfolio(
+              params.row.portfolio_id,
+              params.row.portfolio_name
+            )
+          }
+        >
+          <DeleteOutlineIcon />
+        </IconButton>
+      </Tooltip>
+    </Box>
+  ),
+},
