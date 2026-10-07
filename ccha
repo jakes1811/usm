@@ -1,0 +1,11 @@
+<Info
+  label="Available Balance"
+  value={
+    valuation
+      ? `${portfolio.currency} ${(
+          Number(portfolio.amount || 0) -
+          Number(valuation.total_invested_value || 0)
+        ).toLocaleString()}`
+      : "-"
+  }
+/>
