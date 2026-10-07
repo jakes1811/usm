@@ -1,0 +1,34 @@
+async function handleDeletePortfolio(
+  portfolioId,
+  portfolioName
+) {
+  const confirmed = window.confirm(
+    `Are you sure you want to delete "${portfolioName}"?\n\nThis action cannot be undone.`
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    await deletePortfolio(portfolioId);
+
+    await loadPortfolios();
+    await loadAlerts();
+
+  } catch (error) {
+    console.error(
+      "Portfolio deletion error:",
+      error
+    );
+
+    window.alert(
+      "Failed to delete portfolio."
+    );
+
+  } finally {
+    setLoading(false);
+  }
+}
