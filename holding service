@@ -1,0 +1,671 @@
+from datetime import date
+
+from app.repositories.holding_repository import (
+    HoldingRepository
+)
+
+from app.repositories.portfolio_repository import (
+    PortfolioRepository
+)
+
+from app.services.ums_service import (
+    UMSService
+)
+
+from app.services.allocation_service import AllocationService
+
+
+class HoldingService:
+
+    BUY_DATE = date(
+        2026,
+        10,
+        1
+    )
+
+    REBALANCE_DATE = date(2026, 10, 2)
+
+    # ==================================================
+    # ADD HOLDING
+    # ==================================================
+
+    @staticmethod
+    async def add_holding(
+        portfolio_id,
+        security_id,
+        quantity
+    ):
+
+        # ==============================================
+        # 1. GET PORTFOLIO
+        # ==============================================
+
+        portfolio = (
+            PortfolioRepository
+            .get_portfolio_by_id(
+                portfolio_id
+            )
+        )
+
+        if portfolio is None:
+
+            raise ValueError(
+                "Portfolio not found"
+            )
+
+        existing_holding = (
+            HoldingRepository
+            .get_holding_by_security(
+                portfolio_id,
+                security_id
+            )
+        )
+
+        if existing_holding is not None:
+            raise ValueError(
+                "Security already exits in this portfolio. Use Buy More."
+            )
+
+        # ==============================================
+        # 3. GET SECURITY FROM UMS
+        # ==============================================
+
+        security = await (
+            UMSService.get_security(
+                security_id
+            )
+        )
+
+        # ==============================================
+        # 4. EXCHANGE MUST MATCH PORTFOLIO
+        # ==============================================
+
+        if (
+            security["stock_exchange"]
+            !=
+            portfolio["exchange"]
+        ):
+
+            raise ValueError(
+                "Security exchange does not match portfolio exchange"
+            )
+
+        # ==============================================
+        # 5. GET DAY-1 BUY PRICE FROM UMS
+        # ==============================================
+
+        price_data = await (
+            UMSService.get_security_price(
+                security_id,
+                HoldingService.BUY_DATE
+            )
+        )
+
+        buy_price = float(
+            price_data["close_price"]
+        )
+
+        # ==============================================
+        # 6. CALCULATE PURCHASE VALUE
+        # ==============================================
+
+        total_value = (
+            float(quantity)
+            *
+            buy_price
+        )
+
+        # ==============================================
+        # 7. CREATE HOLDING
+        # ==============================================
+
+        holding_id = (
+            HoldingRepository
+            .create_holding(
+
+                portfolio_id=
+                    portfolio_id,
+
+                security_id=
+                    security_id,
+
+                quantity=
+                    quantity,
+
+                security_price=
+                    buy_price,
+
+                total_value=
+                    total_value
+            )
+        )
+
+        # ==============================================
+        # 8. UPDATE AVAILABLE BALANCE
+        # BUY = DEDUCT PURCHASE VALUE
+        # ==============================================
+
+        PortfolioRepository.update_available_balance(
+            portfolio_id,
+            -total_value
+        )
+
+        if portfolio["status"] == "NEW":
+
+            PortfolioRepository.update_status(
+                portfolio_id,
+                "ACTIVE"
+            )
+
+        await AllocationService.calculate_allocation(
+            portfolio_id,
+            HoldingService.REBALANCE_DATE
+        )
+
+        return {
+
+            "message":
+                "Holding added successfully",
+
+            "asset_holding_id":
+                holding_id,
+
+            "portfolio_id":
+                portfolio_id,
+
+            "security_id":
+                security_id,
+
+            "symbol":
+                security["symbol"],
+
+            "security_name":
+                security["security_name"],
+
+            "asset_class":
+                security["asset_class"],
+
+            "quantity":
+                float(quantity),
+
+            "buy_date":
+                HoldingService.BUY_DATE,
+
+            "buy_price":
+                buy_price,
+
+            "total_value":
+                total_value
+        }
+
+    # ==================================================
+    # GET HOLDINGS WITH SECURITY DETAILS
+    # ==================================================
+
+    @staticmethod
+    async def get_holdings(
+        portfolio_id
+    ):
+
+        portfolio = (
+            PortfolioRepository
+            .get_portfolio_by_id(
+                portfolio_id
+            )
+        )
+
+        if portfolio is None:
+
+            raise ValueError(
+                "Portfolio not found"
+            )
+
+        holdings = (
+            HoldingRepository
+            .get_holdings_by_portfolio(
+                portfolio_id
+            )
+        )
+
+        result = []
+
+        for holding in holdings:
+
+            security = await (
+                UMSService.get_security(
+                    holding["security_id"]
+                )
+            )
+
+            result.append({
+
+                **holding,
+
+                "symbol":
+                    security["symbol"],
+
+                "security_name":
+                    security["security_name"],
+
+                "exchange":
+                    security["stock_exchange"],
+
+                "currency":
+                    security["currency"],
+
+                "asset_class":
+                    security["asset_class"],
+
+                "sub_asset_class":
+                    security.get("sub_asset_class"),
+
+                "equity_category":
+                    security.get("equity_category"),
+
+                "sector":
+                    security["sector"]
+            })
+
+        return result
+
+    # ==================================================
+    # BUY MORE
+    # ==================================================
+
+    @staticmethod
+    async def buy_more(
+        portfolio_id,
+        holding_id,
+        quantity,
+        purchase_date
+    ):
+
+        portfolio = (
+            PortfolioRepository
+            .get_portfolio_by_id(
+                portfolio_id
+            )
+        )
+
+        holding = (
+            HoldingRepository
+            .get_holding_by_id(
+                holding_id
+            )
+        )
+
+        if holding is None:
+
+            raise ValueError(
+                "Holding not found"
+            )
+
+        if portfolio["status"] == "CLOSED":
+
+            raise ValueError(
+                "Closed Portfolio cannot be modified."
+            )
+
+        if (
+            holding["portfolio_id"]
+            !=
+            portfolio_id
+        ):
+
+            raise ValueError(
+                "Holding does not belong to this portfolio"
+            )
+
+        price_data = await (
+            UMSService.get_security_price(
+                holding["security_id"],
+                purchase_date
+            )
+        )
+
+        new_buy_price = float(
+            price_data["close_price"]
+        )
+
+        old_quantity = float(
+            holding["quantity"]
+        )
+
+        old_average_price = float(
+            holding["security_price"]
+        )
+
+        added_quantity = float(
+            quantity
+        )
+
+        new_quantity = (
+            old_quantity
+            +
+            added_quantity
+        )
+
+        old_cost = (
+            old_quantity
+            *
+            old_average_price
+        )
+
+        additional_cost = (
+            added_quantity
+            *
+            new_buy_price
+        )
+
+        new_total_cost = (
+            old_cost
+            +
+            additional_cost
+        )
+
+        new_average_price = (
+            new_total_cost
+            /
+            new_quantity
+        )
+
+        HoldingRepository.update_holding(
+
+            holding_id=
+                holding_id,
+
+            quantity=
+                new_quantity,
+
+            security_price=
+                new_average_price,
+
+            total_value=
+                new_total_cost
+        )
+
+        # ==============================================
+        # UPDATE AVAILABLE BALANCE
+        # BUY MORE = DEDUCT ADDITIONAL COST
+        # ==============================================
+
+        PortfolioRepository.update_available_balance(
+            portfolio_id,
+            -additional_cost
+        )
+
+        await AllocationService.calculate_allocation(
+            portfolio_id,
+            purchase_date
+        )
+
+        return {
+
+            "message":
+                "Additional quantity purchased successfully",
+
+            "asset_holding_id":
+                holding_id,
+
+            "old_quantity":
+                old_quantity,
+
+            "added_quantity":
+                added_quantity,
+
+            "new_quantity":
+                new_quantity,
+
+            "purchase_price":
+                new_buy_price,
+
+            "average_buy_price":
+                new_average_price,
+
+            "additional_investment":
+                additional_cost,
+
+            "total_invested_value":
+                new_total_cost
+        }
+
+    # ==================================================
+    # SELL HOLDING
+    # ==================================================
+
+    @staticmethod
+    async def sell_holding(
+        portfolio_id,
+        holding_id,
+        quantity,
+        sell_date
+    ):
+
+        holding = (
+            HoldingRepository
+            .get_holding_by_id(
+                holding_id
+            )
+        )
+
+        portfolio = (
+            PortfolioRepository
+            .get_portfolio_by_id(
+                portfolio_id
+            )
+        )
+
+        if holding is None:
+
+            raise ValueError(
+                "Holding not found"
+            )
+
+        if portfolio["status"] == "CLOSED":
+
+            raise ValueError(
+                "Closed Portfolio cannot be modified."
+            )
+
+        if (
+            holding["portfolio_id"]
+            !=
+            portfolio_id
+        ):
+
+            raise ValueError(
+                "Holding does not belong to this portfolio"
+            )
+
+        sell_quantity = float(
+            quantity
+        )
+
+        existing_quantity = float(
+            holding["quantity"]
+        )
+
+        if (
+            sell_quantity
+            >
+            existing_quantity
+        ):
+
+            raise ValueError(
+                "Sell quantity cannot be greater than available quantity"
+            )
+
+        price_data = await (
+            UMSService.get_security_price(
+                holding["security_id"],
+                sell_date
+            )
+        )
+
+        sell_price = float(
+            price_data["close_price"]
+        )
+
+        average_buy_price = float(
+            holding["security_price"]
+        )
+
+        sale_value = (
+            sell_quantity
+            *
+            sell_price
+        )
+
+        cost_of_sold_quantity = (
+            sell_quantity
+            *
+            average_buy_price
+        )
+
+        realized_profit_loss = (
+            sale_value
+            -
+            cost_of_sold_quantity
+        )
+
+        remaining_quantity = (
+            existing_quantity
+            -
+            sell_quantity
+        )
+
+        if remaining_quantity == 0:
+
+            HoldingRepository.delete_holding(
+                holding_id
+            )
+
+        else:
+
+            remaining_invested_value = (
+                remaining_quantity
+                *
+                average_buy_price
+            )
+
+            HoldingRepository.update_holding(
+
+                holding_id=
+                    holding_id,
+
+                quantity=
+                    remaining_quantity,
+
+                security_price=
+                    average_buy_price,
+
+                total_value=
+                    remaining_invested_value
+            )
+
+        # ==============================================
+        # UPDATE AVAILABLE BALANCE
+        # SELL = ADD SALE PROCEEDS
+        # ==============================================
+
+        PortfolioRepository.update_available_balance(
+            portfolio_id,
+            sale_value
+        )
+
+        await AllocationService.calculate_allocation(
+            portfolio_id,
+            sell_date
+        )
+
+        return {
+
+            "message":
+                "Security sold successfully",
+
+            "asset_holding_id":
+                holding_id,
+
+            "sold_quantity":
+                sell_quantity,
+
+            "sell_price":
+                sell_price,
+
+            "sale_value":
+                sale_value,
+
+            "average_buy_price":
+                average_buy_price,
+
+            "realized_profit_loss":
+                realized_profit_loss,
+
+            "remaining_quantity":
+                remaining_quantity
+        }
+
+    # ==================================================
+    # DELETE HOLDING
+    # Correction only - not a sale
+    # ==================================================
+
+    @staticmethod
+    async def delete_holding(
+        portfolio_id,
+        holding_id
+    ):
+
+        holding = (
+            HoldingRepository
+            .get_holding_by_id(
+                holding_id
+            )
+        )
+
+        portfolio = (
+            PortfolioRepository
+            .get_portfolio_by_id(
+                portfolio_id
+            )
+        )
+
+        if holding is None:
+
+            raise ValueError(
+                "Holding not found"
+            )
+
+        if portfolio["status"] == "CLOSED":
+
+            raise ValueError(
+                "Closed Portfolio cannot be modified."
+            )
+
+        if (
+            holding["portfolio_id"]
+            !=
+            portfolio_id
+        ):
+
+            raise ValueError(
+                "Holding does not belong to this portfolio"
+            )
+
+        HoldingRepository.delete_holding(
+            holding_id
+        )
+
+        await AllocationService.calculate_allocation(
+            portfolio_id,
+            HoldingService.REBALANCE_DATE
+        )
+
+        return {
+
+            "message":
+                "Holding deleted successfully",
+
+            "asset_holding_id":
+                holding_id
+        }
