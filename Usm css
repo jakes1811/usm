@@ -1,0 +1,1142 @@
+/* =========================================================
+   USM ENTERPRISE DESIGN SYSTEM
+   =========================================================
+
+   Used by:
+   - SecurityMaster.jsx
+   - AssetClasses.jsx
+   - InvestmentThemes.jsx
+
+   No business logic is changed.
+   Styling only.
+   ========================================================= */
+
+
+/* =========================================================
+   GLOBAL PAGE FOUNDATION
+   ========================================================= */
+
+.usm-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 28px 32px 36px;
+  box-sizing: border-box;
+
+  background: #f8fafc;
+  color: #172554;
+
+  font-family:
+    "Segoe UI",
+    Inter,
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.usm-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  margin-bottom: 22px;
+}
+
+.usm-page-title {
+  margin: 0 !important;
+
+  color: #172554 !important;
+
+  font-size: 24px !important;
+  font-weight: 700 !important;
+
+  line-height: 1.25 !important;
+
+  letter-spacing: -0.25px !important;
+}
+
+.usm-page-subtitle {
+  margin-top: 5px !important;
+
+  color: #64748b !important;
+
+  font-size: 13px !important;
+  font-weight: 400 !important;
+
+  line-height: 1.5 !important;
+}
+
+
+/* =========================================================
+   HEADER ACTION AREA
+   ========================================================= */
+
+.usm-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+   ========================================================= */
+
+.usm-primary-button {
+  min-height: 38px !important;
+
+  padding: 0 17px !important;
+
+  border-radius: 7px !important;
+
+  background: #2563eb !important;
+
+  color: #ffffff !important;
+
+  font-size: 13px !important;
+  font-weight: 600 !important;
+
+  text-transform: none !important;
+
+  box-shadow: none !important;
+
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.usm-primary-button:hover {
+  background: #1d4ed8 !important;
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, 0.18) !important;
+}
+
+
+/* =========================================================
+   SECONDARY BUTTON
+   ========================================================= */
+
+.usm-secondary-button {
+  min-height: 38px !important;
+
+  padding: 0 15px !important;
+
+  border-radius: 7px !important;
+
+  border: 1px solid #cbd5e1 !important;
+
+  background: #ffffff !important;
+
+  color: #475569 !important;
+
+  font-size: 13px !important;
+  font-weight: 500 !important;
+
+  text-transform: none !important;
+}
+
+.usm-secondary-button:hover {
+  background: #f8fafc !important;
+
+  border-color: #94a3b8 !important;
+}
+
+
+/* =========================================================
+   SECURITIES FILTER AREA
+   ========================================================= */
+
+.usm-filter-card {
+  display: grid;
+
+  grid-template-columns:
+    minmax(280px, 1fr)
+    180px
+    190px
+    90px
+    90px;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 16px;
+
+  margin-bottom: 16px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+
+/* =========================================================
+   FILTER TEXT FIELD
+   ========================================================= */
+
+.usm-filter-card
+.MuiTextField-root {
+
+  width: 100%;
+}
+
+.usm-filter-card
+.MuiFormControl-root {
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   INPUT HEIGHT
+   ========================================================= */
+
+.usm-filter-card
+.MuiOutlinedInput-root {
+
+  min-height: 40px;
+
+  border-radius: 6px;
+
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   INPUT TYPOGRAPHY
+   ========================================================= */
+
+.usm-filter-card
+.MuiOutlinedInput-input {
+
+  padding: 9px 12px;
+
+  color: #334155;
+
+  font-size: 13px;
+}
+
+.usm-filter-card
+.MuiInputLabel-root {
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   INPUT BORDER
+   ========================================================= */
+
+.usm-filter-card
+.MuiOutlinedInput-notchedOutline {
+
+  border-color: #cbd5e1;
+}
+
+.usm-filter-card
+.MuiOutlinedInput-root:hover
+.MuiOutlinedInput-notchedOutline {
+
+  border-color: #94a3b8;
+}
+
+.usm-filter-card
+.MuiOutlinedInput-root.Mui-focused
+.MuiOutlinedInput-notchedOutline {
+
+  border-color: #2563eb;
+
+  border-width: 1px;
+}
+
+
+/* =========================================================
+   FILTER BUTTONS
+   ========================================================= */
+
+.usm-filter-card
+.MuiButton-root {
+
+  min-height: 40px;
+
+  padding: 0 15px;
+
+  border-radius: 6px;
+
+  font-size: 12.5px;
+
+  font-weight: 600;
+
+  text-transform: none;
+
+  box-shadow: none;
+}
+
+
+/* SEARCH */
+
+.usm-filter-card
+.MuiButton-contained {
+
+  background: #2563eb;
+
+  color: #ffffff;
+}
+
+.usm-filter-card
+.MuiButton-contained:hover {
+
+  background: #1d4ed8;
+
+  box-shadow:
+    0 3px 8px rgba(37, 99, 235, 0.16);
+}
+
+
+/* RESET */
+
+.usm-filter-card
+.MuiButton-outlined {
+
+  color: #475569;
+
+  border-color: #cbd5e1;
+
+  background: #ffffff;
+}
+
+.usm-filter-card
+.MuiButton-outlined:hover {
+
+  background: #f8fafc;
+
+  border-color: #94a3b8;
+}
+
+
+/* =========================================================
+   RECORD COUNT
+   ========================================================= */
+
+.usm-record-count {
+
+  margin: 0 0 10px !important;
+
+  color: #64748b !important;
+
+  font-size: 12.5px !important;
+
+  font-weight: 500 !important;
+}
+
+.usm-record-count strong {
+
+  color: #172554;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   DATA GRID CARD
+   ========================================================= */
+
+.usm-grid-card {
+
+  width: 100%;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+
+/* =========================================================
+   MUI DATA GRID ROOT
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-root {
+
+  border: none !important;
+
+  background: #ffffff;
+
+  color: #334155;
+
+  font-family:
+    "Segoe UI",
+    Inter,
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+
+
+/* =========================================================
+   DATA GRID HEADER
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-columnHeaders {
+
+  min-height: 48px !important;
+
+  max-height: 48px !important;
+
+  background: #f8fafc !important;
+
+  border-bottom:
+    1px solid #dbe3ec !important;
+}
+
+
+/* =========================================================
+   COLUMN HEADER
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-columnHeader {
+
+  min-height: 48px !important;
+
+  max-height: 48px !important;
+
+  padding-left: 16px !important;
+
+  padding-right: 16px !important;
+
+  outline: none !important;
+}
+
+
+/* =========================================================
+   HEADER TEXT
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-columnHeaderTitle {
+
+  color: #475569 !important;
+
+  font-size: 10.5px !important;
+
+  font-weight: 700 !important;
+
+  line-height: 1.2 !important;
+
+  letter-spacing: 0.45px !important;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   HEADER HOVER
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-columnHeader:hover {
+
+  background: #f1f5f9;
+}
+
+
+/* =========================================================
+   HEADER FOCUS
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-columnHeader:focus,
+.usm-grid-card
+.MuiDataGrid-columnHeader:focus-within {
+
+  outline: none !important;
+}
+
+
+/* =========================================================
+   SORT / FILTER ICONS
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-iconButtonContainer {
+
+  margin-left: 4px;
+}
+
+.usm-grid-card
+.MuiDataGrid-iconButtonContainer
+button {
+
+  color: #94a3b8;
+}
+
+.usm-grid-card
+.MuiDataGrid-iconButtonContainer
+button:hover {
+
+  color: #2563eb;
+}
+
+
+/* =========================================================
+   DATA GRID ROW
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-row {
+
+  min-height: 48px !important;
+
+  max-height: 48px !important;
+
+  border-bottom:
+    1px solid #eef2f7 !important;
+
+  transition:
+    background-color 0.12s ease;
+}
+
+
+/* =========================================================
+   ROW HOVER
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-row:hover {
+
+  background: #f8fafc !important;
+}
+
+
+/* =========================================================
+   SELECTED ROW
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-row.Mui-selected {
+
+  background: #eff6ff !important;
+}
+
+
+/* =========================================================
+   CELL
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-cell {
+
+  padding-left: 16px !important;
+
+  padding-right: 16px !important;
+
+  border-bottom: none !important;
+
+  color: #334155;
+
+  font-size: 12.5px;
+
+  font-weight: 400;
+
+  outline: none !important;
+}
+
+
+/* =========================================================
+   CELL FOCUS
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-cell:focus,
+.usm-grid-card
+.MuiDataGrid-cell:focus-within {
+
+  outline: none !important;
+}
+
+
+/* =========================================================
+   ID COLUMN
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-row
+.MuiDataGrid-cell:first-child {
+
+  color: #64748b;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   ACTION COLUMN
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-row
+.MuiDataGrid-cell:last-child {
+
+  color: #64748b;
+}
+
+
+/* =========================================================
+   ACTION ICON
+   ========================================================= */
+
+.usm-grid-card
+.MuiIconButton-root {
+
+  width: 32px;
+
+  height: 32px;
+
+  padding: 6px;
+
+  color: #64748b;
+
+  border-radius: 6px;
+
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.usm-grid-card
+.MuiIconButton-root:hover {
+
+  color: #2563eb;
+
+  background: #eff6ff;
+}
+
+
+/* =========================================================
+   DATA GRID TOOLBAR
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-toolbarContainer {
+
+  min-height: 42px;
+
+  padding:
+    4px 10px;
+
+  border-bottom:
+    1px solid #eef2f7;
+
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   TOOLBAR BUTTONS
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-toolbarContainer
+button {
+
+  color: #64748b;
+
+  border-radius: 6px;
+}
+
+.usm-grid-card
+.MuiDataGrid-toolbarContainer
+button:hover {
+
+  color: #2563eb;
+
+  background: #eff6ff;
+}
+
+
+/* =========================================================
+   DATA GRID FOOTER
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-footerContainer {
+
+  min-height: 48px;
+
+  border-top:
+    1px solid #e2e8f0 !important;
+
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.usm-grid-card
+.MuiTablePagination-root {
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+.usm-grid-card
+.MuiTablePagination-selectLabel,
+.usm-grid-card
+.MuiTablePagination-displayedRows {
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   LOADING OVERLAY
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-overlayWrapper {
+
+  background:
+    rgba(255, 255, 255, 0.75);
+}
+
+
+/* =========================================================
+   DIALOG
+   ========================================================= */
+
+.MuiDialog-paper {
+
+  border:
+    1px solid #e2e8f0 !important;
+
+  border-radius:
+    10px !important;
+
+  box-shadow:
+    0 20px 50px
+    rgba(15, 23, 42, 0.16) !important;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   DIALOG TITLE
+   ========================================================= */
+
+.MuiDialogTitle-root {
+
+  padding:
+    20px 24px 16px !important;
+
+  color: #172554 !important;
+
+  font-size: 18px !important;
+
+  font-weight: 700 !important;
+
+  line-height: 1.3 !important;
+
+  border-bottom:
+    1px solid #eef2f7;
+}
+
+
+/* =========================================================
+   DIALOG CONTENT
+   ========================================================= */
+
+.MuiDialogContent-root {
+
+  padding:
+    22px 24px !important;
+
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   DIALOG FORM
+   ========================================================= */
+
+.MuiDialogContent-root
+.MuiTextField-root {
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   DIALOG INPUT
+   ========================================================= */
+
+.MuiDialogContent-root
+.MuiOutlinedInput-root {
+
+  border-radius: 6px;
+
+  background: #ffffff;
+}
+
+.MuiDialogContent-root
+.MuiOutlinedInput-root:hover
+.MuiOutlinedInput-notchedOutline {
+
+  border-color: #94a3b8;
+}
+
+.MuiDialogContent-root
+.MuiOutlinedInput-root.Mui-focused
+.MuiOutlinedInput-notchedOutline {
+
+  border-color: #2563eb;
+
+  border-width: 1px;
+}
+
+
+/* =========================================================
+   DIALOG INPUT TEXT
+   ========================================================= */
+
+.MuiDialogContent-root
+.MuiOutlinedInput-input {
+
+  color: #334155;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   DIALOG LABEL
+   ========================================================= */
+
+.MuiDialogContent-root
+.MuiInputLabel-root {
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   DIALOG ACTIONS
+   ========================================================= */
+
+.MuiDialogActions-root {
+
+  padding:
+    14px 24px 18px !important;
+
+  border-top:
+    1px solid #eef2f7;
+
+  background: #ffffff;
+
+  gap: 8px;
+}
+
+
+/* =========================================================
+   DIALOG CANCEL BUTTON
+   ========================================================= */
+
+.MuiDialogActions-root
+.MuiButton-root:not(.MuiButton-contained) {
+
+  min-height: 36px;
+
+  padding: 0 15px;
+
+  color: #475569;
+
+  border-radius: 6px;
+
+  font-size: 13px;
+
+  text-transform: none;
+}
+
+
+/* =========================================================
+   DIALOG SAVE / UPDATE BUTTON
+   ========================================================= */
+
+.MuiDialogActions-root
+.MuiButton-contained {
+
+  min-height: 36px;
+
+  padding: 0 17px;
+
+  border-radius: 6px;
+
+  background: #2563eb;
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  text-transform: none;
+
+  box-shadow: none;
+}
+
+.MuiDialogActions-root
+.MuiButton-contained:hover {
+
+  background: #1d4ed8;
+
+  box-shadow:
+    0 3px 8px
+    rgba(37, 99, 235, 0.16);
+}
+
+
+/* =========================================================
+   MENU / DROPDOWN
+   ========================================================= */
+
+.MuiMenu-paper {
+
+  margin-top: 4px;
+
+  border:
+    1px solid #e2e8f0;
+
+  border-radius: 7px !important;
+
+  box-shadow:
+    0 10px 25px
+    rgba(15, 23, 42, 0.12) !important;
+}
+
+.MuiMenuItem-root {
+
+  min-height: 38px;
+
+  color: #334155;
+
+  font-size: 13px;
+}
+
+.MuiMenuItem-root:hover {
+
+  background: #f8fafc;
+}
+
+.MuiMenuItem-root.Mui-selected {
+
+  background: #eff6ff !important;
+
+  color: #1d4ed8;
+}
+
+
+/* =========================================================
+   ERROR MESSAGE
+   ========================================================= */
+
+.MuiDialogContent-root
+.MuiTypography-colorError {
+
+  margin-top: 14px !important;
+
+  padding:
+    9px 11px;
+
+  border-radius: 6px;
+
+  background: #fef2f2;
+
+  color: #b91c1c !important;
+
+  font-size: 12.5px;
+
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   TOOLTIP
+   ========================================================= */
+
+.MuiTooltip-tooltip {
+
+  padding:
+    6px 9px !important;
+
+  border-radius: 5px !important;
+
+  background: #172554 !important;
+
+  font-size: 11px !important;
+
+  font-weight: 500 !important;
+}
+
+
+/* =========================================================
+   SECURITY DETAILS DIALOG
+   ========================================================= */
+
+/*
+   SecurityDetailsDialog is also part of the Security Master
+   workflow, so its standard MUI dialog gets the same
+   enterprise treatment above.
+*/
+
+.MuiDialogContent-root
+.MuiTypography-root {
+
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.usm-grid-card
+.MuiDataGrid-virtualScroller::-webkit-scrollbar {
+
+  width: 8px;
+
+  height: 8px;
+}
+
+.usm-grid-card
+.MuiDataGrid-virtualScroller::-webkit-scrollbar-track {
+
+  background: #f8fafc;
+}
+
+.usm-grid-card
+.MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb {
+
+  background: #cbd5e1;
+
+  border-radius: 10px;
+}
+
+.usm-grid-card
+.MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb:hover {
+
+  background: #94a3b8;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+  .usm-page {
+
+    padding:
+      24px 24px 30px;
+  }
+
+  .usm-filter-card {
+
+    grid-template-columns:
+      minmax(220px, 1fr)
+      160px
+      170px
+      90px
+      90px;
+  }
+}
+
+
+@media (max-width: 950px) {
+
+  .usm-page-header {
+
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .usm-page-actions {
+
+    justify-content: flex-start;
+  }
+
+  .usm-filter-card {
+
+    grid-template-columns:
+      1fr 1fr;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .usm-page {
+
+    padding:
+      18px 14px 24px;
+  }
+
+  .usm-page-title {
+
+    font-size: 21px !important;
+  }
+
+  .usm-filter-card {
+
+    grid-template-columns: 1fr;
+
+    padding: 14px;
+  }
+
+  .usm-grid-card
+  .MuiDataGrid-columnHeader {
+
+    padding:
+      0 12px !important;
+  }
+
+  .usm-grid-card
+  .MuiDataGrid-cell {
+
+    padding:
+      0 12px !important;
+  }
+}
